@@ -41,22 +41,27 @@ export const getCourseById = async (req: Request, res: Response) => {
 
   /**
  * POST Course /courses
- * @param object username
+ * @param object name, inPerson, students
  * @returns a single Course object
 */
 export const createCourse = async (req: Request, res: Response) => {
-    const { course } = req.body;
-    try {
-      const newCourse = await Course.create({
-        course
-      });
-      res.status(201).json(newCourse);
-    } catch (error: any) {
-      res.status(400).json({
-        message: error.message
-      });
-    }
-  };
+  try {
+    console.log(req.body);
+    const { name, inPerson, students } = req.body;
+    const newCourse = await Course.create({
+      name,
+      inPerson,
+      students
+    });
+    res.status(201).json(newCourse);
+  } catch (error: any) {
+    console.log(error);
+    
+    res.status(400).json({
+      message: error.message
+    });
+  }
+};
 
 /**
  * PUT Course based on id /courses/:id
