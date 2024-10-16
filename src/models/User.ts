@@ -1,69 +1,43 @@
 import { Schema, Types, model, type Document } from 'mongoose';
 
-interface IAssignment extends Document {
-    assignmentId: Schema.Types.ObjectId,
-    name: string,
-    score: number
+interface IUser extends Document {
+    username: string,
+    email: string,
+    thoughts: Types.ObjectId[],
+    friends: Types.ObjectId[]
 }
 
-interface IStudent extends Document {
-    first: string,
-    last: string,
-    github: string,
-    assignments: Schema.Types.ObjectId[]
-}
 
-const assignmentSchema = new Schema<IAssignment>(
+
+const UserSchema = new Schema<IUser>(
     {
-        assignmentId: {
-            type: Schema.Types.ObjectId,
-            default: () => new Types.ObjectId(),
-        },
-        name: {
+        username: {
             type: String,
             required: true,
-            maxlength: 50,
-            minlength: 4,
-            default: 'Unnamed assignment',
+            unique: true,
+            trimmed: true,
         },
-        score: {
-            type: Number,
-            required: true,
-            default: () => Math.floor(Math.random() * (100 - 70 + 1) + 70),
+        email: {
+            type: String,
+            runique: true,
+            match: [/.+@.+\..+/, 'Please enter a valid e-mail address'],
         },
+        thoughts: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Thought',
+            },
+        ],
+        friends: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+            },
+        ],
     },
-    {
-        timestamps: true,
-        _id: false
-    }
 );
 
-const studentSchema = new Schema<IStudent>({
-    first: {
-        type: String,
-        required: true,
-        max_length: 50,
-    },
-    last: {
-        type: String,
-        required: true,
-        max_length: 50,
-    },
-    github: {
-        type: String,
-        required: true,
-        max_length: 50,
-    },
-    assignments: [assignmentSchema],
-},
-    {
-        toJSON: {
-            getters: true,
-        },
-        timestamps: true
-    }
-);
 
-const Student = model('Student', studentSchema);
+const Users = model('User', UserSchema);
 
-export default Student;
+export default Users;
