@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Thoughts } from "../models";
+import { Thoughts } from "../models/index.js";
 
 export const getAllThoughts = async (_req: Request, res: Response) => {
   try {
@@ -13,7 +13,45 @@ export const getAllThoughts = async (_req: Request, res: Response) => {
   }
 };
 
-export const addReaction = async (req: Request, res: Response) => {
+export const findAllThoughtsById = async (req: Request, res: Response) => {
+  try {
+    const thoughts = await Thoughts.findOne({ _id: req.params.userId });
+
+    if (!thoughts) {
+      return res.status(404).json({ message: "No thoughts found :(" });
+    }
+
+    return res.json(thoughts);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
+export const createThought = async (req: Request, res: Response) => {
+  try {
+    const thoughts = await Thoughts.create(req.body);
+
+    return res.json(thoughts);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
+export const updateThought = async (req: Request, res: Response) => {
+  try {
+    const thoughts = await Thoughts.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $set: req.body },
+      { runValidators: true, new: true }
+    );
+
+    return res.json(thoughts); // Add this line to return the updated thoughts
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
+export const createReaction = async (req: Request, res: Response) => {
   console.log("You are adding an reaction");
   console.log(req.body);
   try {
