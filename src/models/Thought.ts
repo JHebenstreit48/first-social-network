@@ -1,6 +1,6 @@
 import { Schema, model, type Document } from "mongoose";
-import ReactionSchema, { IReaction } from "./Reaction";
-import formattedDate from "../utils/dateformat";
+import ReactionSchema, { IReaction } from "./Reaction.js";
+import formattedDate from "../utils/dateformat.js";
 
 interface IThought extends Document {
   thoughtText: string;
