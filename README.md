@@ -2,7 +2,7 @@
 
 ## Description
 
-  To create a cohesive site for all Asphalt Legends Unite information.
+Shows the back-end side of how different aspects of a social network site work.
 
 ## Table of Contents
 
@@ -16,30 +16,28 @@
 
 ## Installation
 
-N/A
+use npm run start alongside creating HTTP requests in Insomnia to show hte functionality of this project.
+
+The videos are here and linked, but you have to click on the linked name to get there.
+
+[GitHub Repo](https://github.com/JHebenstreit48/first-social-network),
+
+[Google Drive Insomnia Video](https://drive.google.com/file/d/1CrvV-Ig9wb3PqDimMMXua_c3tHwdnoUh/view?usp=sharing)
 
 ## Usage
 
-Visit the website to see all relevant information for the game. They will eventually be able to login and enter their car information in to track their in game progress.
+How you would add create, get, post update, get by ID and delete friends, reactions, users, thoughts on a social network on the back-end.
 
 ## License
   This project is licensed under the [MIT](https://opensource.org/license/MIT) license.
 
 ## Contributions
 
-[text](https://coding-boot-camp.github.io/full-stack/github/professional-readme-guide),
-[text](https://asphalt.fandom.com/wiki/Ajlani_Motors),
-[text](https://en.wikipedia.org/wiki/Acura),
-[Honda News - Acura History](https://hondanews.com/en-US/releases/release-e6b4345aa35541ea9556b69e4424209e-acura-history),
-[text](https://www.google.com/search?gs_ssp=eJzj4tVP1zc0zDZNMTfNTc8zYLRSNagwMbcws0w2Tkw2S0sEgiQrg4rURKOkVAtjQ8s0YxMzQ3NTL75EhZTU4sz0PIXE8sSiFADA_RSv&q=a+design+award&oq=A+Design+A&gs_lcrp=EgZjaHJvbWUqEwgBEC4YgwEYrwEYxwEYsQMYgAQyBggAEEUYOTITCAEQLhiDARivARjHARixAxiABDIHCAIQABiABDIHCAMQABiABDIHCAQQABiABDIHCAUQABiABDIHCAYQABiABDIGCAcQRRhB0gEINDUzMmowajeoAgCwAgA&sourceid=chrome&ie=UTF-8),
-[text](https://aroc-uk.com/about/company-history/),
-[text](https://www.linkedin.com/company/apollo-automobil-limited/?originalSubdomain=hk),
-[Arash Motor Company Ltd. - About page](https://arashcars.com/about/),
-[Ares Modena - Company](https://www.aresdesign.com/en-us/company/),
+I just used the mini-project or activity 28 for Module 14 as the starter code for the project. I also used videos I recorded from sessions with instructor and TAs to help me with things I did not understand. I also used ChatGPT and GitHub CoPilot at times when I struggled but they were not always a great help.
 
 ## Tests
 
-README copied and edited from non-React version of the site. To test it I used npm run dev.
+I used ```npm run build``` and ```npm run start``` to continuously start and stop the server during testing.
   
 ## Questions
 

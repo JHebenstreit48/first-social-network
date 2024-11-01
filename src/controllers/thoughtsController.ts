@@ -29,19 +29,33 @@ export const findThoughtById = async (req: Request, res: Response) => {
 
 export const createThought = async (req: Request, res: Response) => {
   try {
-    const thoughts = await Thoughts.create(req.body);
-    const user = await Users.findOneAndUpdate(
-      { _id: req.body.userId },
-      { $addToSet: { thoughts: thoughts._id } },
+    console.log("Received request body:", req.body);
+
+    // Find the user by username
+    const user = await Users.findOne({ username: req.body.username });
+    console.log("User lookup result:", user);
+
+    if (!user) {
+      console.log("User not found, returning 404");
+      return res.status(404).json({ message: "No user found :(" });
+    }
+
+    // Create the new thought
+    const newThought = await Thoughts.create(req.body);
+    console.log("Thought created:", newThought);
+
+    // Update the user's thoughts array
+    const updatedUser = await Users.findOneAndUpdate(
+      { username: req.body.username },
+      { $addToSet: { thoughts: newThought._id } },
       { new: true }
     );
+    console.log("User updated with new thought:", updatedUser);
 
- if (!user) {
-      return res.status(404).json({ message: "No user found :(" });
- }
-    return res.json(thoughts);
+    return res.status(201).json(newThought);
   } catch (err) {
-    return res.status(500).json(err);
+    console.error("Error in createThought:", err);
+    return res.status(500).json({ message: "An error occurred while creating the thought.", error: err });
   }
 };
 
