@@ -10,18 +10,16 @@ import {
   removeFriend,
 } from '../../controllers/usersController.js';
 
-// /api/users
+// /api/user
 router.route('/').get(getAllUsers).post(createUser);
 
-// /api/students/:userId
+// /api/user/:userId
 router.route('/:userId').get(getUserById).delete(deleteUser);
 
-// /api/users/:userId/update
+// /api/user/:userId/update
 router.route('/:userId/update').put(updateUser);
 
-// /api/students/:userID/friends/
-router.route('/:userId/friends').post(addFriend).delete(removeFriend);
-
-
+// /api/user/:userId/friends/
+router.route('/:userId/friend/:friendId').post(addFriend).delete(removeFriend);
 
 export { router as userRouter};

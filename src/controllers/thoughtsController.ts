@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Thoughts } from "../models/index.js";
+import { Thoughts, Users } from "../models/index.js";
 
 export const getAllThoughts = async (_req: Request, res: Response) => {
   try {
@@ -13,9 +13,9 @@ export const getAllThoughts = async (_req: Request, res: Response) => {
   }
 };
 
-export const findAllThoughtsById = async (req: Request, res: Response) => {
+export const findThoughtById = async (req: Request, res: Response) => {
   try {
-    const thoughts = await Thoughts.findOne({ _id: req.params.userId });
+    const thoughts = await Thoughts.findOne({ _id: req.params.thoughtId });
 
     if (!thoughts) {
       return res.status(404).json({ message: "No thoughts found :(" });
@@ -29,18 +29,40 @@ export const findAllThoughtsById = async (req: Request, res: Response) => {
 
 export const createThought = async (req: Request, res: Response) => {
   try {
-    const thoughts = await Thoughts.create(req.body);
+    console.log("Received request body:", req.body);
 
-    return res.json(thoughts);
+    // Find the user by username
+    const user = await Users.findOne({ username: req.body.username });
+    console.log("User lookup result:", user);
+
+    if (!user) {
+      console.log("User not found, returning 404");
+      return res.status(404).json({ message: "No user found :(" });
+    }
+
+    // Create the new thought
+    const newThought = await Thoughts.create(req.body);
+    console.log("Thought created:", newThought);
+
+    // Update the user's thoughts array
+    const updatedUser = await Users.findOneAndUpdate(
+      { username: req.body.username },
+      { $addToSet: { thoughts: newThought._id } },
+      { new: true }
+    );
+    console.log("User updated with new thought:", updatedUser);
+
+    return res.status(201).json(newThought);
   } catch (err) {
-    return res.status(500).json(err);
+    console.error("Error in createThought:", err);
+    return res.status(500).json({ message: "An error occurred while creating the thought.", error: err });
   }
 };
 
 export const updateThought = async (req: Request, res: Response) => {
   try {
     const thoughts = await Thoughts.findOneAndUpdate(
-      { _id: req.params.userId },
+      { _id: req.params.thoughtId },
       { $set: req.body },
       { runValidators: true, new: true }
     );
@@ -56,7 +78,7 @@ export const createReaction = async (req: Request, res: Response) => {
   console.log(req.body);
   try {
     const reaction = await Thoughts.findOneAndUpdate(
-      { _id: req.params.userId },
+      { _id: req.params.thoughtId },
       { $addToSet: { reactions: req.body } },
       { runValidators: true, new: true }
     );
@@ -65,7 +87,7 @@ export const createReaction = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "No reaction found :(" });
     }
 
-    return res.json();
+    return res.json(reaction);
   } catch (err) {
     return res.status(500).json(err);
   }
@@ -74,7 +96,7 @@ export const createReaction = async (req: Request, res: Response) => {
 export const removeReaction = async (req: Request, res: Response) => {
   try {
     const user = await Thoughts.findOneAndUpdate(
-      { _id: req.params.userId },
+      { _id: req.params.thoughtId },
       { $pull: { reactions: { reactionId: req.params.reactionId } } },
       { runValidators: true, new: true }
     );
